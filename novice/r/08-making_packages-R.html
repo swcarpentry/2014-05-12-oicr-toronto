@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta http-equiv="x-ua-compatible" content="IE=9" >
 
-<title>Reproducible Research</title>
+<title>Making packages in R</title>
 
 <style type="text/css">
 body, td {
@@ -179,272 +179,139 @@ hljs.initHighlightingOnLoad();
 </head>
 
 <body>
-<h1>Reproducible Research</h1>
+<h1>Making packages in R</h1>
 
-<p>Independent replication of a scientific study is the best way to evaluate its truth.
-Short of replication, a study should be reproducible.</p>
+<p>Why should you make your own R packages?</p>
 
-<p>Research is reproducible if data and analysis methods are shared so that others can reproduce the results.</p>
+<p><strong>Reproducible research!</strong></p>
 
-<p>With code, this means sharing your raw data and analytic code for others to use and evaluate.</p>
+<p>An R package is the <strong>basic unit of reusable code</strong>.
+If you want to reuse code later or want others to be able to use your code, you should put it in a package.</p>
 
-<p>Sharing code ensures transparency, but not validity.
-However, it allows others to more easily judge validity.</p>
-
-<p>Raw data -&gt; processed data -&gt; data analysis -&gt; presentable results
-Code allows you to make your workflow/pipelines reproducible.</p>
-
-<h2>How can we ensure our research is reproducible?</h2>
+<p>An R package requires two components:</p>
 
 <ul>
-<li><p>Don&#39;t do things by hand.</p>
+<li>a DESCRIPTION file with metadata about the package</li>
+<li><p>an R directory with the code</p>
 
-<ul>
-<li>No Excel!</li>
-<li>Don&#39;t download data by clicking a link. </li>
-<li>download.file()</li>
-<li>No copy and pasting to new files.</li>
-<li>Don&#39;t edit data manually.</li>
-<li>Analysis programs with GUIs can sometimes be problematic.</li>
-<li>If it has to be done by hand, document it thoroughly.</li>
-</ul></li>
-<li><p>Code allows a computer to do all the boring work while keeping an accurate record.</p>
-
-<ul>
-<li>Almost guarantees reproducibility.</li>
-<li>Record your software environment (Computer details, OS, software versions)</li>
-<li>sessionInfo()</li>
-<li>date()</li>
-</ul></li>
-<li><p>Treat your code as part of your lab notebook.</p>
-
-<ul>
-<li>A lab notebook should be written so that a colleague can read it and do exactly what you did.</li>
-<li>Code should be written the same way, with lots of comments.</li>
-</ul></li>
-<li><p>Everything of importance should be done in scripts, not interactively.</p></li>
-<li><p>Work to ensure reproducibility from the start of a project.</p></li>
-<li><p>Use version control.</p></li>
-<li><p>Use a non-proprietary file format (e.g. .csv instead of .xls).</p></li>
-<li><p>If you generate random numbers or sample from a larger data set, set your seed.</p>
-
-<ul>
-<li>set.seed()</li>
-</ul></li>
+<p><em>There are other optional components. Go <a href="http://adv-r.had.co.nz/Package-basics.html">here</a> for much more information.</em></p></li>
 </ul>
 
-<h1>Literate programming in R using <code>knitr</code></h1>
+<h2>DESCRIPTION file</h2>
 
-<p><strong>Basic idea:</strong> Write <strong>data</strong> + <strong>software</strong> + <strong>documentation</strong> (or in this case manuscripts, reports) together.</p>
+<pre><code>Package: Package name
+Title: Brief package description
+Description: Longer package description
+Version: Version number(major.minor.patch)
+Author: Name and email of package creator
+Maintainer: Name and email of package maintainer (who to contact with issues)
+License: Abbreviation for an open source license
+</code></pre>
 
-<p>Analysis code can be divided into text and code &ldquo;chunks&rdquo;.
-Doing so allows us to extract the code for machine readable documents (<code>tangle</code>) or produce a human-readable document (<code>weave</code>).</p>
+<p>The package name can only contain letters and numbers and has to start with a letter.</p>
 
-<p>Literate programming involves three main steps:</p>
+<h2>.R files</h2>
+
+<p>Functions don&#39;t all have to be in one file or each in separate files.
+How you organize them is up to you.
+Suggestion: organize in a logical manner so that you know which file holds which functions.</p>
+
+<h2>Making your first R package</h2>
+
+<p>Let&#39;s turn our temperature conversion functions into an R package.</p>
+
+<pre><code class="r">fahr_to_kelvin &lt;- function(temp) {
+    # Converts Fahrenheit to Kelvin
+    kelvin &lt;- ((temp - 32) * (5/9)) + 273.15
+    kelvin
+}
+</code></pre>
+
+<pre><code class="r">kelvin_to_celsius &lt;- function(temp) {
+    # Converts Kelvin to Celsius
+    Celsius &lt;- temp - 273.15
+    Celsius
+}
+</code></pre>
+
+<pre><code class="r">fahr_to_celsius &lt;- function(temp) {
+    # Converts Fahrenheit to Celsius using fahr_to_kelvin() and
+    # kelvin_to_celsius()
+    temp_k &lt;- fahr_to_kelvin(temp)
+    result &lt;- kelvin_to_celsius(temp_k)
+    result
+}
+</code></pre>
+
+<p>We will use the <code>devtools</code> and <code>roxygen2</code> packages, which make creating packages in R simple.
+First, install the <code>devtools</code> package, which will allow you to install the roxygen2 package from GitHub.</p>
+
+<pre><code class="r">install.packages(&quot;devtools&quot;)
+library(&quot;devtools&quot;)
+devtools::install_github(&quot;klutometis/roxygen&quot;)
+library(roxygen2)
+</code></pre>
+
+<p>Set your working directory, and then use the <code>create</code> function to start making your package.
+Keep the name simple and unique.</p>
 
 <ul>
-<li>Separate the narrative from the code.</li>
-<li>Execute source code and return the results.</li>
-<li>Combine the results from the source code with the original narratives to produce a final document.</li>
+<li>package_to_convert_temperatures_between_kelvin_fahrenheit_and_celsius (BAD)</li>
+<li>tempConvert (GOOD)</li>
 </ul>
 
-<p>Installing <code>knitr</code></p>
-
-<pre><code class="r">install.packages(&quot;knitr&quot;, dependencies = TRUE)
+<pre><code class="r">setwd(parentDirectory)
+create(&quot;tempConvert&quot;)
 </code></pre>
 
-<p>Knitr supports a variety of documentation formats including <code>markdown</code>, <code>html</code> and <code>LaTeX</code>. 
-It also allows for easy export to <code>PDF</code> and <code>HTML</code>.</p>
+<p>Add our functions to the R directory.
+Place each function into a separate R script and add documentation like this:</p>
 
-<h2>What is markdown?</h2>
+<pre><code class="r">#&#39; Convert Fahrenheit to Kelvin
+#&#39;
+#&#39; This function converts input temperatures in Fahrenheit to Kelvin.
+#&#39; @param temp The input temperature.
+#&#39; @keywords fahrenheit kelvin temperature
+#&#39; @export
+#&#39; @examples
+#&#39; fahr_to_kelvin(32)
 
-<p>Markdown is an incredibly simple semantic file format, not too dissimilar from .doc, .rtf, or .txt.
-Markdown makes it easy to write any sort of text (including with links, lists, bullets, etc.) and have it parsed into a variety of formats.
-To learn more about the basics of markdown:</p>
+fahr_to_kelvin &lt;- function(temp) {
+    # Converts Fahrenheit to Kelvin
+    kelvin &lt;- ((temp - 32) * (5/9)) + 273.15
+    kelvin
+}
+</code></pre>
+
+<p>Now, we will use roxygen2 to convert our documentation to the standard R format.</p>
+
+<pre><code class="r">setwd(&quot;./tempConvert&quot;)
+document()
+</code></pre>
+
+<p>Take a look at the package directory now.
+The /man directory has a .Rd file for each .R file with properly formatted documentation.</p>
+
+<p>Now, let&#39;s load the package and try out the functions.</p>
+
+<pre><code class="r">setwd(&quot;..&quot;)
+install(&quot;tempConvert&quot;)
+</code></pre>
+
+<p>Notice there is now a tempConvert environment that is the parent environment to the global environment.
+Choosing the tempConvert environment will show the functions associated with our new package.</p>
+
+<pre><code class="r">fahr_to_celsius(32)
+fahr_to_kelvin(212)
+kelvin_to_celsius(273.15)
+</code></pre>
+
+<h2>Challenges</h2>
 
 <ul>
-<li><a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">Markdown cheatsheet</a></li>
-<li><a href="http://daringfireball.net/projects/markdown/basics">Original markdown reference</a></li>
+<li>Create some new functions for your tempConvert package to convert from Kelvin to Fahrenheit or from Celsius to Kelvin or Fahrenheit.</li>
+<li>Create a package for our analyze function so that it will be easy to load when more data arrives.</li>
 </ul>
-
-<p><strong>Good and Bad Practices</strong></p>
-
-<p>Related: See <a href="../R-basics/best-practices.Rmd">best practices</a> in the <a href="../R-basics/">R-basics folder</a>.</p>
-
-<h2>Creating a basic knitr document</h2>
-
-<p>In RStudio, choose new R Markdown file (easiest way)
-or you can create a new text file and save it with extension <code>.Rmd</code>.</p>
-
-<p>A basic code chunk looks like this:</p>
-
-<pre><code class="r"># some R code
-</code></pre>
-
-<hr/>
-
-<p>You can knit this document using the knit button or do it programmatically using the <code>knit()</code> function.</p>
-
-<pre><code>library(knitr)
-knit(&quot;file.Rmd&quot;)
-</code></pre>
-
-<p><strong>What just happened?</strong></p>
-
-<p>knitr read the Rmd file, then located and ran all the code chunks identified by the backticks, and replaced it with the output of R function calls. If figures are generated from any such calls, they will be included in markdown syntax.  </p>
-
-<h2>Chunk labels</h2>
-
-<p>You can also name your code chunks. This allows you to keep all the code in a separate script and just refer to code chunks using meaningful names (e.g. data-processing, analysis, model-fitting, visualization, figures, tables)</p>
-
-<pre><code>{r, chunk_name}
-</code></pre>
-
-<p><strong>Some rules on naming chunks</strong></p>
-
-<ul>
-<li>Chunk labels are supposed to be unique id’s in a document.<br/></li>
-<li>knitr will throw an error if two chunks have the same name.<br/></li>
-<li>If no chunk names are given, knitr will simply increment from chunk 1, 2,3 etc.</li>
-</ul>
-
-<p>In addition to naming chunks within the curly braces, you can also add a bunch of other options on how that particular code chunk should behave. </p>
-
-<p><strong>Other options you can add to the tag</strong></p>
-
-<table><thead>
-<tr>
-<th>Option</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><strong>echo</strong> =   TRUE or FALSE</td>
-<td>to show or hide code.</td>
-</tr>
-<tr>
-<td><strong>eval</strong> =   TRUE or FALSE</td>
-<td>to run or skip the code.</td>
-</tr>
-<tr>
-<td><strong>warning</strong> =   TRUE or FALSE</td>
-<td>to show or hide function warnings.</td>
-</tr>
-<tr>
-<td><strong>message</strong> =  TRUE or FALSE</td>
-<td>to show or hide function R messages.</td>
-</tr>
-<tr>
-<td><strong>results</strong> = &ldquo;hide&rdquo;</td>
-<td>will hide results. They will still be executed</td>
-</tr>
-<tr>
-<td><strong>fig.height</strong> =</td>
-<td>Height of figure</td>
-</tr>
-<tr>
-<td><strong>fig.width</strong> =</td>
-<td>width of figure</td>
-</tr>
-</tbody></table>
-
-<p>Once your output markdown files (<code>.md</code>) files are generated, you should never edit them because they are automatically generated. Next time you knit the original <code>.Rmd</code> files, all the changes in the <code>.md</code> file will get wiped out. </p>
-
-<p><strong>Write sentences in text with inline output</strong></p>
-
-<pre><code>Include some text 3. 
-</code></pre>
-
-<p><strong>Summarizing output from models.</strong></p>
-
-<p><pre><code>```{r fit_model}
-library(datasets)
-data(airquality)
-fit = lm(Ozone ~ Wind + Temp + Solar.R, data = airquality)</p>
-
-<pre><code>
-## Including formatted tables in markdown
-
-
-
-library(knitr) 
-stitch(&quot;your-script.R&quot;)
-</code></pre>
-
-<h2>Additional chunk options</h2>
-
-<p>Chunks are extremely flexible and more options (beyond the ones listed in the table above) can be included in the header. These look exactly like the kinds of arguments that one might pass to standard R functions. In the example below, the chunk will only be executed if the condition (in this case x less than 5) is satisfied. </p>
-
-<pre><code>{r chunk_name, eval = if (x &lt; 5) TRUE else FALSE}
-</code></pre>
-
-<p>This allows your document to be dynamic allowing certain chunks to be executed only when specific conditions are met.</p>
-
-<h2>Error handling</h2>
-
-<p>By default <code>knitr</code> will not stop execution if it encounters an error. It will continue through to the end of the document and include any errors that arise within chunks. The reason for this behavior is that knitr treats the code as if it were fed directly into the R console. Any errors get printed to the screen and the remaining commands are executed. </p>
-
-<p>To stop knitr as soon as it encounters an error, one can set an option explicitly:</p>
-
-<pre><code class="coffee">opts_knit$set(stop_on_error = 2L)
-</code></pre>
-
-<p><strong>Possible options for error handling</strong></p>
-
-<table><thead>
-<tr>
-<th>Option</th>
-<th>What it does</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>* <strong>0L</strong></td>
-<td>do not stop on errors, continue on as if code was pasted into R console</td>
-</tr>
-<tr>
-<td>* <strong>1L</strong></td>
-<td>when an error occurs, return the results up to this point, ignore the rest of the code within that particular chunk without reporting any further errors.</td>
-</tr>
-<tr>
-<td>* <strong>2L</strong></td>
-<td>Completely stop upon encountering the first error.</td>
-</tr>
-</tbody></table>
-
-<h2>Working with graphics in <code>knitr</code></h2>
-
-<p>If you use <code>ggplot2</code> from the data visualization section, you can have that easily parsed into your document.</p>
-
-<pre><code>library(ggplot2)
-p &lt;- qplot(carat, price, data = diamonds) + geom_hex()
-p 
-# no need to explicitly print(p)
-</code></pre>
-
-<hr/>
-
-<h2>Code Externalization</h2>
-
-<p>Sometimes it can be rather tedious to include dozens of lines of code in the same file as the narrative. In such cases, one can improve readability by externalizing the code into a separate script and simply calling the chunks at the appropriate locations in a document. The code will get read in and executed at those points. There are two steps to making this happen.</p>
-
-<p>First, read the script using <code>read_chunk()</code> at the top of any <code>.Rmd</code> file</p>
-
-<pre><code>read_chunk(&quot;source_code.R&quot;)
-</code></pre>
-
-<p>This is usually done in an early chunk such as the first chunk of a document, and we can use the chunk <code>data-processing</code> later in the source document:</p>
-
-<pre><code>{r, data-processing}
-</code></pre>
-
-<p>Then simply call any chunk as needed simply by using its label. You do not have to include any code between the backticks. </p>
-
-<pre><code>## @knitr data-processing
-</code></pre>
-
-<p>Be sure to leave a blank line between chunks.</p>
-
-<hr/>
 
 </body>
 

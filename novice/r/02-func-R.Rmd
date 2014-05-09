@@ -94,8 +94,8 @@ Real-life functions will usually be larger than the ones shown here—typically 
 
 ## R Environments and scoping rules
 
-An **environment** is a place to store variables. An environment's job is to bind a set of variables to a set of values.
-The environment is where R will look when it needs to find the value of a variable.
+An **environment** is a place to store names (variables, functions). An environment's job is to bind a set of names to a set of values.
+The environment is where R will look when it needs to find the value of a name.
 
 Environments have parents. If R cannot find a variable in the current environment, it will look in the parent environment.
 
@@ -103,6 +103,10 @@ Environments have parents. If R cannot find a variable in the current environmen
   - emptyenv is the top level environment (no parent).
   - baseenv is the environment of the base package (the basic functions which let R work as a programming language).
   - globalenv is the current user working environment. The parent of globalenv will change as you load packages.
+  
+Let's take a look at the different environments with RStudio.
+Choosing a different environment will show you the names in that environment.
+Loading a package will change the parent of the global environment.
 
 Understanding environments is important to understand how R defines variables (scoping rules).
 The scope of an association between a variable and a value is the part of the code where the association is valid.
@@ -154,10 +158,6 @@ read.csv('data/inflammation-01.csv', ',')
 ```
 
 then the filename is assigned to name (which is what we want), but the delimiter string ',' is assigned to `header` rather than `sep`, because `header` is the second parameter in the list. That's why we don't have to provide `file=` for the filename, but do have to provide `sep=` for the second parameter.
-
-### Challenges
-
-Rewrite the normalize function so that it scales data to lie between 0.0 and 1.0 by default, but will allow the caller to specify lower and upper bounds if they want. Compare your implementation to your neighbor's: do the two functions always behave the same way?
 
 Key Points
 ===============

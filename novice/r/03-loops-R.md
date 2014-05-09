@@ -12,11 +12,11 @@ analyze <- function(filename) {
     avg_inflammation <- apply(data, 2, mean)
     max_inflammation <- apply(data, 2, max)
     min_inflammation <- apply(data, 2, min)
-    tempo <- c(1:ncol(data))
+    day <- c(1:ncol(data))
     
-    plot(tempo, avg_inflammation)
-    plot(tempo, min_inflammation)
-    plot(tempo, max_inflammation)
+    plot(day, avg_inflammation)
+    plot(day, min_inflammation)
+    plot(day, max_inflammation)
 }
 
 analyze("data/inflammation-01.csv")

@@ -2,16 +2,17 @@ Reproducible Research
 =====================
 
 Independent replication of a scientific study is the best way to evaluate its truth.
+
 Short of replication, a study should be reproducible.
 
 Research is reproducible if data and analysis methods are shared so that others can reproduce the results.
-
 With code, this means sharing your raw data and analytic code for others to use and evaluate.
 
 Sharing code ensures transparency, but not validity.
 However, it allows others to more easily judge validity.
 
 Raw data -> processed data -> data analysis -> presentable results
+
 Code allows you to make your workflow/pipelines reproducible.
 
 How can we ensure our research is reproducible?
@@ -44,7 +45,7 @@ How can we ensure our research is reproducible?
 
 - Use a non-proprietary file format (e.g. .csv instead of .xls).
 
-- If you generate random numbers or sample from a larger data set, set your seed.
+- If you generate random numbers or sample from a larger data set, set your seed to ensure the same results each time.
   - set.seed()
 
 
@@ -63,10 +64,9 @@ Literate programming involves three main steps:
 - Combine the results from the source code with the original narratives to produce a final document.
 
 Installing `knitr`
-------------------
-
-Installing knitr is quite easy:
+```{r, eval=FALSE}
 install.packages("knitr", dependencies = TRUE)
+```
 
 Knitr supports a variety of documentation formats including `markdown`, `html` and `LaTeX`. 
 It also allows for easy export to `PDF` and `HTML`.

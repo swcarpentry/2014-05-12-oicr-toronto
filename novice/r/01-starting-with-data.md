@@ -48,7 +48,7 @@ Change the current working directory to the location of the CSV file, e.g.
 
 
 ```r
-setwd("~/Copy/SoftwareCarpentry/2014-05-12-oicr-toronto/novice/r")  #Change to the correct path.
+setwd(pathname)  #Change to the correct path.
 # Can use Ctrl+Shift+K, but be sure to copy the command to a script.
 ```
 

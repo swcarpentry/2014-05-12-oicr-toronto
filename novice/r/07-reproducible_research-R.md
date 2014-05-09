@@ -30,6 +30,7 @@ How can we ensure our research is reproducible?
   - Almost guarantees reproducibility.
   - Record your software environment (Computer details, OS, software versions)
     - sessionInfo()
+    - date()
 
 - Treat your code as part of your lab notebook.
   - A lab notebook should be written so that a colleague can read it and do exactly what you did.
@@ -62,21 +63,9 @@ Literate programming involves three main steps:
 - Combine the results from the source code with the original narratives to produce a final document.
 
 Installing `knitr`
-------------------
-
 
 ```r
-# Installing knitr is quite easy.
 install.packages("knitr", dependencies = TRUE)
-```
-
-```
-## Installing package into '/home/josh/R/x86_64-pc-linux-gnu-library/3.1'
-## (as 'lib' is unspecified)
-```
-
-```
-## Error: trying to use CRAN without setting a mirror
 ```
 
 
@@ -107,10 +96,11 @@ or you can create a new text file and save it with extension `.Rmd`.
 
 A basic code chunk looks like this:
 
-<pre><code>```{r}
+
+```r
 # some R code
 ```
-</code></pre>
+
 ---
 
 You can knit this document using the knit button or do it programmatically using the `knit()` function.
