@@ -181,18 +181,19 @@ hljs.initHighlightingOnLoad();
 <body>
 <h1>Reproducible Research</h1>
 
-<p>Independent replication of a scientific study is the best way to evaluate its truth.
-Short of replication, a study should be reproducible.</p>
+<p>Independent replication of a scientific study is the best way to evaluate its truth.</p>
 
-<p>Research is reproducible if data and analysis methods are shared so that others can reproduce the results.</p>
+<p>Short of replication, a study should be reproducible.</p>
 
-<p>With code, this means sharing your raw data and analytic code for others to use and evaluate.</p>
+<p>Research is reproducible if data and analysis methods are shared so that others can reproduce the results.
+With code, this means sharing your raw data and analytic code for others to use and evaluate.</p>
 
 <p>Sharing code ensures transparency, but not validity.
 However, it allows others to more easily judge validity.</p>
 
-<p>Raw data -&gt; processed data -&gt; data analysis -&gt; presentable results
-Code allows you to make your workflow/pipelines reproducible.</p>
+<p>Raw data -&gt; processed data -&gt; data analysis -&gt; presentable results</p>
+
+<p>Code allows you to make your workflow/pipelines reproducible.</p>
 
 <h2>How can we ensure our research is reproducible?</h2>
 
@@ -226,7 +227,7 @@ Code allows you to make your workflow/pipelines reproducible.</p>
 <li><p>Work to ensure reproducibility from the start of a project.</p></li>
 <li><p>Use version control.</p></li>
 <li><p>Use a non-proprietary file format (e.g. .csv instead of .xls).</p></li>
-<li><p>If you generate random numbers or sample from a larger data set, set your seed.</p>
+<li><p>If you generate random numbers or sample from a larger data set, set your seed to ensure the same results each time.</p>
 
 <ul>
 <li>set.seed()</li>
@@ -235,7 +236,11 @@ Code allows you to make your workflow/pipelines reproducible.</p>
 
 <h1>Literate programming in R using <code>knitr</code></h1>
 
-<p><strong>Basic idea:</strong> Write <strong>data</strong> + <strong>software</strong> + <strong>documentation</strong> (or in this case manuscripts, reports) together.</p>
+<p><strong>Basic idea:</strong> Write <strong>data</strong> + <strong>software</strong> + <strong>documentation</strong> (or in this case reports) together.</p>
+
+<p>You can place your code and results along with an appropriate description in a logical order in a single document.</p>
+
+<p>This makes linking text, code, and results much easier.</p>
 
 <p>Analysis code can be divided into text and code &ldquo;chunks&rdquo;.
 Doing so allows us to extract the code for machine readable documents (<code>tangle</code>) or produce a human-readable document (<code>weave</code>).</p>
@@ -267,10 +272,6 @@ To learn more about the basics of markdown:</p>
 <li><a href="http://daringfireball.net/projects/markdown/basics">Original markdown reference</a></li>
 </ul>
 
-<p><strong>Good and Bad Practices</strong></p>
-
-<p>Related: See <a href="../R-basics/best-practices.Rmd">best practices</a> in the <a href="../R-basics/">R-basics folder</a>.</p>
-
 <h2>Creating a basic knitr document</h2>
 
 <p>In RStudio, choose new R Markdown file (easiest way)
@@ -278,7 +279,9 @@ or you can create a new text file and save it with extension <code>.Rmd</code>.<
 
 <p>A basic code chunk looks like this:</p>
 
-<pre><code class="r"># some R code
+<pre><code>```{r}
+# some R code
+```
 </code></pre>
 
 <hr/>
@@ -289,9 +292,30 @@ or you can create a new text file and save it with extension <code>.Rmd</code>.<
 knit(&quot;file.Rmd&quot;)
 </code></pre>
 
+<h2>Creating a knitr report</h2>
+
+<pre><code>    ```{r}
+    x <- rnorm(100)
+    y <- x + rnorm(100)
+    plot(x,y)
+    ```
+</code></pre>
+
+<pre><code class="r">x &lt;- rnorm(100)
+y &lt;- x + rnorm(100)
+plot(x, y)
+</code></pre>
+
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfgAAAH4CAMAAACR9g9NAAAC61BMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACqL0MjAAAA+XRSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1+f4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV19jZ2tvc3d7g4eLj5OXn6Ozt7u/w8vP09fb3+Pn6+/z9/v8c2CQiAAAACXBIWXMAAAsSAAALEgHS3X78AAAe9klEQVR4nO2dd2ATV57HnyRXjA3GppoYY3pvphkwDnUBO3QMBEyAQEKxaQFCcagGEnrv3ZhmMMWAcZNsy5YLIcndbnY32+6yu7ndZDd3t3e55c+bkbGRVawpb6SR3vfzx8OaefPmMR9pypv3fo8QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAODxhC1ZCtTLQp1S4mfdcPf/DTSAsYNi4pcrVTKgwAWIZxOIZxSIZxSIZxSIZxSIZxRK4of42yyCeFVDSfx3bW0WQbyqkS3+7z/xvPq/n6xXQLyriBwVLn4j2eK7ld+JDg//S+83+x66z0zeKZklA0FozmTvz18jejP5p3rd6l9OrHeqDx9gJvOe3JKBEOZv4+Tf7St2MxrX+A766z/YXuMP35JfMnDOue5ckpQidjMqN3fapbfCbBZCvGvYN4JLVswVu5lyz/EQ7xq6FbQiPUqbiN0M4j2e2JzqjI6it4J4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4RoF4b6PJO1OaCcgG8V7GgOoN6yrjnOeDeC+joA0h4aXO80G8d6HT8+ljm7B3Xa4VHK4XhBLivYwyHSGaCq3V0o5lvXVjyxtZLIF4L2P12RZhhz6xXrqXv+qvm26xBOK9jaS795I11guvRPNrVlosgXgmWLGaSzIHWSyBeCbwfXA+9VG65RKIZ4R+U+ubhnhGgXhGgXhGgXhGgXhGgXhGgXhGgXhGgXhGgXhGgXhGgXhGgXj10fpMcdZgpXcC8aqjkTFeE23opfBeIF51JGziksFHFN4LxKuORe9xSVuljx7Eq47u2VyyaoXCe4F4GnSbNdKmf6N0NuRtvpblQ688u0A8BXZkLz+SH0CvvLaje9IrzAEQL5/ud7nkvQ3uroY4IF4+ye9zSfN7tiuCJk1t6fLaCATi5TNmN5cMPm6zvMuLzavLJ9Hay9hifdEIWoVBPA38imYE9jN2s1n+sCMhjSso3fX1zGtKwg30bEE8BZruenbOzu1YCZ9ci6Kzj7SxXDJ1DZ3CCMQrSbE/lxgaOc0niD38aX7CZjqFEYhXkuTMiKbbaDW9xt/QEp/sGEqlUREfyl/FdOHWiyGeJN7K/kBHpaTOl6rKv7hatYhKYWZki+/xi3/+NoGQqFfWKyCeHhFlfbUxpv50vkQ1yBZv3OkX922MpfjAaDOX7sgsGdSxdiaXzF9Os0jZ4n8MIWTyC52F+DFnzfzLc5klgzo+HcYlo3bSLFK2+C9nEKLJTsepXkkS93LJkbE0i5QtfuzfTC1I+MsvIF5JTmduun2Yaony7+pbJwUT4p/0qfVyiH9D1JY9P5NXQtepnehUpRY8x7uA/hUJsed3u7sW9YF4F/AogksKhESYdR0Q7wLMjfYHBjnL5lIg3gU8iOKefIrxi2eOXqYZ8dfovV+hAsTLotm+/FvDnGdru2abgEjiLgXi5aArnOQbWdDAxbvlqc8LJ0svXxvmPI9EIF4OQw9ySaerDtf7FseR4DsJUotfacoyzZO6sRMgXg7mHjGBjl9KDOJb21rel1j6iKta4vuwh8StnQDxcojM0xCStMPh+p9t5RL/Qoml743lkilrJW7tBIiXxbLc1ceeOu5cFWbwJWSuTfT4NwzO0xvnOlq5aySXzEyRUz/HQLw8Wk9psF1mRvHB69n+Dlc3L4sgQfcddZoekBNEQvUKCYJ4ZQmO69LA2tnLSMQnN5846oE9uaS68G0lakUg3r28t7CHKSHpy7MUixxlMD5s6LtWC8S7k/YFt7ppjs7IiqZWYkx+GOlSJaB1GOLdypQfrpZsIVtlvqy34BB/y7FytvOMEO9eLv/Mj5BHb1Er7wLfX2PuhwIyQrxbaVcxf+KpPfTKm7+bEM3T7s4zQrxctFF+cjYPXbnDzvsb/w9Pb5D0GldzLPeIcYmAjBAvk5kvr1akkaatqBbqU7Cq+5wXzSVtG9onUEg2iJdHp7wAojlXnXO7rDPFUhP4LvTTGmjxkw/Ey2PJfC65m8t9A0oolpo6g0uiHb/1owDEy2FQ0mb+evryKJfcbUOv3NH86955H9Er0BaIl472xrXUx39qQ4K+4zvhPKTYaULz/Juvvv4iiF6BtkC8dOby72OzXhYa76/RkLEP5RUWsL40t2625whD8oblBTTvGmyAeOkcHsAlY9MI8fvMqM9oIa+wq8sCQi8tfv1hOd/0Nm6rzPo1CMRLZ+M0LlnyPpWymjwjfE+t158+nsglQz6jUrIDIF46bSqHBMRXhVIpq8NlPjW+/jT4loaQs+OplOwAiJdB1IX8k63pFKWtaEJI/7pDlmo4UrCFTskOgHiVMLZy+0FT27qPjfuEKLs/iFcLTUcOVTpitSUQzygQT5e49VNoxqZSDoinysVjs7cWKdriRguIp8mIU1yyYL27qyEEiKfJyjlcEpXh7moIgXXxuk6dKV6TJ27nkglU49EpBePiO5RdvCC6C0XfJTMddHLxyVvQaYJJtbNSWMK4+Gc9CemWJzBzl8f68jWEbM6cu7rSwSuZRmsyd9HtheUEnyhpHbQYF+9rHsj6XFAnNeJv7EF8T86LyNUQMvKEovUSzODyzLwMYdW3gm3xGnN/KYNWUObB/NuykJzxfDAbrUG5SonAr4r7vSfvk7Ip2+LJ0RSN5sOTwvLG8zdtgc+7XuP+6XRDyVoJph/f50tT7DSfHRgX77+t2LBDwFSBkanregWbmhGy5iNya23b2NJ+3MJpGdcn2M+uiZ0i8dIrjq7nucRPUuAFxsULZHjp9MRHycMrM4rO6ojPooyDHbmFG09Ftr9iN4Z8aNHhtEKlgtdYoi0ZSHT7V0rZFOKFUBDO/bAqtaStRfALTTl3k6crs5f92Hjudttov4eGsPsJoUTcMb5YK2mCM4gXgvke8Eb9oY0hOXxa5GsvO2935yjbFf6HPi+jOEJSDhAvBEMw30fGqonP1JSQlrU3Vrrkz1LqTgeP+JmZLtoZubhnLSFDDIpVUwwQL4RJz4cPuL7aamF82YcrKl5HwNE+Xj9ocVmT12vGZLfym/FQQ0JP6g0bLb8u5jNHZluiAiBeEN33Hhxus7Dl7Fm1gygm8tHoZ22sXTPmYdkO7iSRNYFo0zZabFEz92Q7JWsqFIinwuqppLan7BtC+TEWGssxdYdnE9JJ0mM3dSCeChP51rO5G+svjDS/n7UUH3Try/wCynOMSATiRWPvgUybs23Y8oomVktNrbk7AYsxr7pLT068mE5UAfPiGx+sqtwhPKaFbmdFYa6d97i6WbsX14twyX09+pV//6eSHIvAFqvWcU90hgjJdaUJ8+Kvc5fdlYcEZ1+3WUM6Ge09vNejVbbBeLsiQtfv2Zs4J+Gpv0ri/lk1U1I9acO6eL8iPjU6y1ZHIe/8WF9n2bI530f4q3uvujdA7V/Mz71y9vVE8O6HdfEhT/m0WHD3Kz0/6OHIgJoPLds52C6IHwK58Fdc0qnuTv/cYDLmXnbXPuWUJpSXCeviSS53APoLn/94K3eZjqoy3xOEZD24auxjN1dj/uvU4a+BRHO0LtZgEfcleec3X91UxVM8xJNO+uuZecJHPvoeL31SWGP75CRC2pTZf0OSM4SQyUXVV8veTDPI/eIJudNVVmUpwrx4ou0k8BCEf5q1l7tF19Weqs0P6Jc62s3bKiu38HKwNtLicaF9xbsj9p+RU1OqQLxQQismhE0yWTyqm9/B3XH0cBZg84gYvjFdxrxEtIF4oazke1Ys/ODNgg27tGTsM4f5R+frixKVr5ZUIF4onw7lkrj0Nwu0W0r0l8IdZY/ODyWNn/RyQcWkAfFCmbONS9IFN7im8jlHbVesOnKBeKFob52YfzpDcDenDfxsc7GSej67BIgXzvBFsfUXtJkS5zCIRf9sH6LNGKl0nSQD8WJpmnZ+dU2H7AXFa/eXOexGvaDsqnGFy2olGohvGJ+pSwfWWxBmmt5xcRH/rBZaxv3cx5x2uKku0pUxbcQC8Q0SXLQzOaPehXojH1j6Y/7ObQTfKidtGIsKgPgG2cY3td+xfCg7241LEjdwSSe+g02Lx26pl3wgvkGy+d6U7ydbLEnlJ/o5YB469Whh445Px7mlXvKB+AY5xrfa7I+3WBJoSEs4dNf8VBeQ9izLtu+tY1qMst+w7xYgvkE6V7/dZmlBvbfuvlPXjZM0aGlV8fY7t1Rzv0dDvCbEXv9DrxBPoj+7sbpuNG0zOaHJu+VwX5ePVPOAJ1t8o82//sern77ZZjNlsneIt6B53oMsg4SBbz2z9YWTCFm4kPu77U3q1ZKIbPFX8keG+YYNf3TReoXXib87nEQOyRW9WaipCwl7NpAk8r3u+x2nXy9pyBb/fc0cPMHf1S1JyDfzB6ExhTwEbfHw6gzDv1v3nXfKzBQu6X+UBJUPIRGF/RSomSRki/+iZjqNmS+tV3jdL97IR8T41WbhG/hMWz+MkMULuD87XCGkzcXCx0OUqpxoZIuP+f3Xdy7e/vkfB1iv8Drx2Y8ImXYzX3D+4OKNiafOkM7PuDv59GTn+V2L/Lt6n9GLNy4dbfuYok7xTSQ9iZmJqyotPtUmR3D+LXyr34UhZEHlkfwj0nerEN7/HO+ftL4uNsXbFY+rJE/jZ45zd2K+4Py3+e548z8gJLAPnXlrqOL14oNLNvAnXDOtS0OJ9ozkUYvtswvLl9lboV1YaFhmc87bx3/f0umPm9EOHiVpoun6eL34NPMJd6j579l880n0Ner72PJZ40af2EwWFmEa12nRM7rBjjjCSw58YpDfXdfrxd/mB0vMX2r+2/xkZR2+gDsVb3p6XUybuw3mURVGm+FUbdIzUwTE0BPJ+VjuqlMmu1yPFd/EpqnQPnvHcMm+0ea/mxvDic/FBKscmpwlQZ0LxojY97KyF5csBt/ozO/kn4h+wpeGeRzHYZuHKLF4qPgexQ9LzghSH1GR2GnF09cn3KHFhVVLrXN05UMXtBQxNex7R31IbJ7FOfxZNPfzNggvQBZ5/Mwnd2QHUPJM8TpjO0IW73aekaP5zjPLGxzPHs/PDSymJ00ef5493420mTax5ozbvXrv7qoY4QXIYubN5v7J9+ovCxg0SOy53zPFd+dv02n1egozcFfntwVGMuYxR7s+NGhmaWpadZR5ScDwEUIHP0dd+fzZ22KrWI9JT0q31N9b76oDBypFjt3wTPFd+FdCOjrip182VK/crXc4JMaWz2YR0rQyuIL7kfUUPsC6huCyfiQ8l3LLbVEU97AiMpSxMPHH4sRP3KKkeG1JX6LZ+jGNojae7TDz67xpYjpINLqTfbl0RHdz/9oSZ5mtSOQr3eeUyK0aJsD8Oixf3MlemPgdX/351CiRnUcUvbmLfKA3ptN4RNaaNJvuzvzdC3GdoiJ6+JBm/HjJRgaHeVodLrhu+y4ueQm/+W1xlXSCppRPS8W1Cgs91UevLfnzuXFOg/5YoJLneAtitq+zmS8m7H64XkNK+2WKL+78+pB29x02AwaZ4nWdjT2tF3fg++GstXmykMdnm318t4ocrSVUfNOZl//y8/JvRbQYqU782sxJSeU2z7+msemkZaHoUzaHb8rDTMdTvCdu4pJY23BaS4oO3LlCuTnPZ3VhYarIi7Ew8esNf3+e0p578vmT8JLVJr4RH1++jc149sSKl0srh7TNFlKELqWoaI3AK94S/m1OpJ0TSbP49sJKUBZh4i9NCzb/GzRVeMlqE9/LfDNmG9gssuhhbFzJQJvldkjf5uuz6YCw3fXm7/dXpgivn4vxzMc5KTQ2cEm4nT5zmjkn9ws7CuZvTYnA8/TmR6nn7oq5KXIt7IgnW0/Hji0eKjCz9v2blwZbfI7eeWy8rzkYYq7QyaIjp9qPhaYOPFd84DsLu4jbYszh3YL/t2fT2vV9NrHu49CSUX1P7MnjNm+nF7dTteKx4luatix8ardbBA3C+EtC6Jv+dU/5+WL1AysP7K+0M+OIDDr3c1OgS48Vf3443+NZztCWhuhzjE/fPOOZ/zoS4zdwYF0UszmGF4fl9oQJeXTtsEley71UPFZ8Md9Qtd3OTE+CCN7+PKuhca6BldxtWY+sus8Povh24mCLHPMuBZIJz61by3x3VJuuCG/2P5LAyTfR76whAI8Vf58fyJEhdfjpg4V+b+U4bn0h5L2Cxeur3swl0bN63qSsdZYZzK/FL1tHrt+5TkPGCB8yb/72HnLVC916eKz4YUW9W66S2ubdke9316zBntJR86Y0tvjYYsXaQfXWm5vGD1i/ZjNfErLDLJb0XJfqOGxxAT8R9FW3zFXiseLJwPOZq6SeJIfvIVbTBInm8ARCGpW9vjObXlRy2dwXq2ZmQovuMfNyEqeVOIx9lXwxkEzKdUufe88VL4eQcu4SPtpx3CIBBD+/fqjq9cViUlYIGVHM3/bxHfo6Wkw7qqnw5x4RihyWsrBQf8I9ne7ZFE/mFK/dXyrznrxTn9qmnHv8r30/HwQv9EHO7ZIeb/K0MnfUKFHdOBpmxZNWicPpBad4zl+qP65p7mnS0nKNeV7SxrKuKQrBqniqbFlIiH9xvac4nxVPHy/gfugpNwYMy33HXRVrAIiXg7bm/t0/8/bBsin11hzc1ij4KN/NatiBfT3sbOl2IF4GK7949LKma0p03+B6a7R8byit3cnlVQLES2fcNS0J0NttQ2pibsQRPrmV6/Ey8dqVhfptgS7a2VF++rk59l8UGbkrftRzF1VECl4mPm2vD/ngiot2Zm5rTbbfcXJI+aa0crov8ujiZeLNDakFLvrJx2UHknCjgwbZoPFjBQ7rdA9eJt78xHzPphO1M7TT93wY7DybNfOMeoN7XqrKx8vEZ/ckpKXom2lNZvrwJaYw5xm9CC8TH1l8ZJ9R9NjxuBNc8o6wwbfegpeJJ9r+g4VPBl+LOS55yyyn+cQQk6SaWIZ28Tbxkog7wiUTaP7iNZcvfnhVPfOJ2sFDxbe/WHhC9C2cQzTZ2w/o/0hzcsAZO7lk/ySKJdLGM8VHmGK0cRX0gs74/evzPXOq21Arr2Zayvid9AqkjmeK38RP2rpkIbXyxvA9csbspVYeWTOHSxYp1vubAp4p/ih/4zThdTzhoF15twUNfXPMUn7C4NZio1s0QMsXIwNGV6v5AdEzxc/j53k9UxPDTPt8lm90fmzDGzhh6DkumZ0mv2J1RB59dojipYM+nilee/Nqataxmr8H8LH/oyQENrDkzImEjQYJbXeei2eKJ6TX1Nou7ZP4mR/8bEL/9Fs6Q8wD/bB1osLgeD6eKv4NEUVaQqZ9arV06825H5eo+RrrbjxfPFleuPqInn+0sxi43v4Rl4wXGMOASbxAPImYPJRzvrJCX9C3dtHktVziV+CqGngg3iDezPQLviTSVNum0/8sl/S64tIaeBZeI/4mPx/EptpGUk1OasTwCjVHpHA3XiP+Lj9Ufl1dcCa/lTcOWg9lBRZ4jfj39hDSxCgiIi3jeI14zb6K+1ViZhtgHA8S7yzMmI+LpojwDjxGfLNbhtKzMrvPNnZVj3sPwGPE3xtHyAJZ4b7b5DzNu4vGvNeoVHzTo8X65ZajyhuZQ1LaBiQVwcOBhIy6IacEb0Kl4nNmEP/jqywWBD/h02IZEQYCzQOaDBIDR2smb5rjVW9x1Cm+JT/Zjk+9qUee9CNk/BUxhYSeKi7e+Mazv7kBV2Q4/1q09/YkbClwS1wyhVCn+M4X+LReIIl2BU/ys0UFL7k3jfimb7D4PImQOZekVSiRnwZg+XJpG6sSdYrXVoUTMuZi/YWNAifnFO0NEVpGKD+TnGVkq7DrhpJzzjeP+GibbY94c5yTHrKiJakMdYonseWnbjy1vgOffj9cN0dwcLDIDD4VHX4m1jgjIcvmpz2LD27xruSJqFWISsWTwN5dbQw/41torghugTe1JuTtK2J3nN+cEF2ldZx5/+Ll3edVqXA2cMmoVbw9DPxXYe8wodn7VZ3OyBcd0sz8xHjJ5tsVuOzkGq9qGVSHeL/+sQ7C/2vnXj9eO5XT8XGEBJQJ7xKp6+o4mKhDCppydwZlqh7aTgVViI82Hd1XbX/uiDPbIwcUxtf8HZp3dlfJFLvZ6BFfOHrYpXXO83k6qhD/sBf36F5hb00Lvt0mvDaWjGZQvPJNrl3SD8UrvhP3owrx5paa263trIk5yKdqDhvmqahCfCkfFqzI3quzYH5VD7ozcgIeVYjfcDDIL+WC3VXLns5b9UIVM/R5GRTEh/JPWTqbTk8ixGsWGwybHYx76bZoDlNDm1yFbPE9fvHP3yYQEvXKeoUHRcRgEdnijTv94r6NgXhPQ7b4H0MImfxCB/EehmzxX87gY8ikW4hvN9NMjqAJmoGbkC1+7N9MLUj4yy/eiO+11EyB8Fm4gOuRf1ffOom76/ZPsh6nbHWqj3mkv/KW3F0BetB5jl9kZ1k98T0Nb5EYk+BOFEBx6Ij/3s6yeuL3869gUmfR2Jc0ukzHSLp6uEj8JX43c1bQ2JckTt7cdOuE2/auRuiIT7GzrJ749zdz9/73+9rJ5hIS93PJgUR37V6NuKitXncta5t+Pc3ip1UYCwSHCd4VxyVxe+yv9F+wZ6rE3vYejMte0kTFN6dZ+oiHQSSiUuj08amzuWROqt11wSWp4z7JZs68Kt7OSeA4f9n48F2BuZsb+2n7G+1/89byMcv3qDnesCJ4qvgL/Nzbye8Lzd7xYoWj/+mFrlwyeYP9ld6Lp4pPOkSIb6HdOd9Esj6JSz5R4yygiuKp4smusqvVVNoFQsrmD0x5puKpAZXBY8WTkPaUxjAGrz65yHoAhffjueKBLCCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUSCeUVwrPv7SzQ/Yix6qSlwqPuF+x1brTyu1QyAGl4ovCOKSp6FK7RGIwKXiS/jkRG+l9ghE4FLxWd0J8avyV2qPQAQuFd/e9NHi/NlK7RCIwbV39QFT5rVRYFddsvWlaxUo15vxhud4/8quRHdssat25x14g/hB/DySwTmu2p134A3iR+7ikoA8V+3OO/AG8Y0rmhGymuoEpt6PN4gnw0oyCo4zN4GYPLxCPCFtG7lwZ16Bl4gHYoF4RoF4RoF4RoF4RoF4RqEkfojtu1aIVzWUxH/X1mYRxKsa2eL//hPPq//7yXoFxKsa2eK7ld+JDg//S+9w6xUQr2rkn+p1q385Ead6j4PGNb6D/voPFuIT8s385q78koFiULm50y69FWazcNZyCiUDpaBzV7/IzjKIVzV0xH9vZxnEqxqIZxQ64lPsLIN4VaNcWz3EqxqIZxSIZxSIZxSIZxSIZxSIZxSIZxSIZxR3i/eZun6iRqkqAMe4Wbzf820J++9olaoDcIibxX+QyiXpU5SqA3CIm8Uf78Ml49KUqgNwiJvFr5lbmwDX4mbxTStndVxgROQ71+Puu/qwLWfXBStVBeAYd4sHbgLiGQXiGcX7xHcb2dg9O/YsvE1845wrh0omu2PPHoa3id8/lRD/8ibu2LVn4W3iDXycw93x7ti1Z+Ft4p805ZLTmATDKd4m/p2MIDI6F6/7nOJt4sl0ffUxmyANwAavEw+EAfGMAvGMAvGMAvGMAvGMAvGMAvGMAvGMAvGMopz48b9+IZoffqTOP/6TepH/9d/Ui/zxf+gX+WODh/qbFkqJl8LTQOpF7oijXmTiOupFtrpJvUiip1+kYkA8RSCeNhBPHYinCMTTBuKpA/EU8STxD+gPn/wklnqRE1ZRLzL8OvUiSS79IhUjgH6RfvT73+l8qRepxP9cgSIBAAAAAAAAAAAAyJgvfzT2oF3o0650y4t5+dfL1JuWaVdSmUOpFK3/NrPJrl/QLXP0+Vd0j6nP79+PKNhMtUj6lVTkUCpHkokQv3+GUi3zoxM/0j2mo78mJP7XVIukX0lFDqVyBLcgJO53tKOYf0v3mC6+Q0jYP1ReSYUOpXJoJn+bSLtMysd040VCfF+FUC2TvnhlDqUSpHz//SISdv9FDOUiqR/Tpbe5X/z/0n7nR1083UOpMP6fp+vol0r5mI75OSHDv6FaJKEvXplDqRRJX0Zx0K4w5WPq88cZjR9uo1okoS9emUOpFJ++4qEdwYb2MY358j8uU+8pRLuSyhxKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWFCq0b30iBFJgCqa0ndXZLm7EsAN9Py3P0S4uw7AHRTedncNgDsY+dW3fd1dB+B6/L8ekVxGPxwyUDtpGURrWuDuWgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUDP/D+ReggZQITMoAAAAAElFTkSuQmCC" alt="plot of chunk unnamed-chunk-2"/> </p>
+
 <p><strong>What just happened?</strong></p>
 
-<p>knitr read the Rmd file, then located and ran all the code chunks identified by the backticks, and replaced it with the output of R function calls. If figures are generated from any such calls, they will be included in markdown syntax.  </p>
+<p>knitr read the Rmd file, then located and ran all the code chunks identified by the backticks, and replaced it with the output of R function calls. If figures are generated from any such calls, they will be included in markdown syntax.</p>
+
+<p>Rmd -&gt; md -&gt; html</p>
+
+<p>Once your output markdown files (<code>.md</code>) files are generated, you should never edit them because they are automatically generated. 
+Next time you knit the original <code>.Rmd</code> files, all the changes in the <code>.md</code> file will get wiped out. </p>
 
 <h2>Chunk labels</h2>
 
@@ -347,104 +371,6 @@ knit(&quot;file.Rmd&quot;)
 <td>width of figure</td>
 </tr>
 </tbody></table>
-
-<p>Once your output markdown files (<code>.md</code>) files are generated, you should never edit them because they are automatically generated. Next time you knit the original <code>.Rmd</code> files, all the changes in the <code>.md</code> file will get wiped out. </p>
-
-<p><strong>Write sentences in text with inline output</strong></p>
-
-<pre><code>Include some text 3. 
-</code></pre>
-
-<p><strong>Summarizing output from models.</strong></p>
-
-<p><pre><code>```{r fit_model}
-library(datasets)
-data(airquality)
-fit = lm(Ozone ~ Wind + Temp + Solar.R, data = airquality)</p>
-
-<pre><code>
-## Including formatted tables in markdown
-
-
-
-library(knitr) 
-stitch(&quot;your-script.R&quot;)
-</code></pre>
-
-<h2>Additional chunk options</h2>
-
-<p>Chunks are extremely flexible and more options (beyond the ones listed in the table above) can be included in the header. These look exactly like the kinds of arguments that one might pass to standard R functions. In the example below, the chunk will only be executed if the condition (in this case x less than 5) is satisfied. </p>
-
-<pre><code>{r chunk_name, eval = if (x &lt; 5) TRUE else FALSE}
-</code></pre>
-
-<p>This allows your document to be dynamic allowing certain chunks to be executed only when specific conditions are met.</p>
-
-<h2>Error handling</h2>
-
-<p>By default <code>knitr</code> will not stop execution if it encounters an error. It will continue through to the end of the document and include any errors that arise within chunks. The reason for this behavior is that knitr treats the code as if it were fed directly into the R console. Any errors get printed to the screen and the remaining commands are executed. </p>
-
-<p>To stop knitr as soon as it encounters an error, one can set an option explicitly:</p>
-
-<pre><code class="coffee">opts_knit$set(stop_on_error = 2L)
-</code></pre>
-
-<p><strong>Possible options for error handling</strong></p>
-
-<table><thead>
-<tr>
-<th>Option</th>
-<th>What it does</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>* <strong>0L</strong></td>
-<td>do not stop on errors, continue on as if code was pasted into R console</td>
-</tr>
-<tr>
-<td>* <strong>1L</strong></td>
-<td>when an error occurs, return the results up to this point, ignore the rest of the code within that particular chunk without reporting any further errors.</td>
-</tr>
-<tr>
-<td>* <strong>2L</strong></td>
-<td>Completely stop upon encountering the first error.</td>
-</tr>
-</tbody></table>
-
-<h2>Working with graphics in <code>knitr</code></h2>
-
-<p>If you use <code>ggplot2</code> from the data visualization section, you can have that easily parsed into your document.</p>
-
-<pre><code>library(ggplot2)
-p &lt;- qplot(carat, price, data = diamonds) + geom_hex()
-p 
-# no need to explicitly print(p)
-</code></pre>
-
-<hr/>
-
-<h2>Code Externalization</h2>
-
-<p>Sometimes it can be rather tedious to include dozens of lines of code in the same file as the narrative. In such cases, one can improve readability by externalizing the code into a separate script and simply calling the chunks at the appropriate locations in a document. The code will get read in and executed at those points. There are two steps to making this happen.</p>
-
-<p>First, read the script using <code>read_chunk()</code> at the top of any <code>.Rmd</code> file</p>
-
-<pre><code>read_chunk(&quot;source_code.R&quot;)
-</code></pre>
-
-<p>This is usually done in an early chunk such as the first chunk of a document, and we can use the chunk <code>data-processing</code> later in the source document:</p>
-
-<pre><code>{r, data-processing}
-</code></pre>
-
-<p>Then simply call any chunk as needed simply by using its label. You do not have to include any code between the backticks. </p>
-
-<pre><code>## @knitr data-processing
-</code></pre>
-
-<p>Be sure to leave a blank line between chunks.</p>
-
-<hr/>
 
 </body>
 

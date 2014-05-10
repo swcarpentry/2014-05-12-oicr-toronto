@@ -267,8 +267,8 @@ Real-life functions will usually be larger than the ones shown here—typically 
 
 <h2>R Environments and scoping rules</h2>
 
-<p>An <strong>environment</strong> is a place to store variables. An environment&#39;s job is to bind a set of variables to a set of values.
-The environment is where R will look when it needs to find the value of a variable.</p>
+<p>An <strong>environment</strong> is a place to store names (variables, functions). An environment&#39;s job is to bind a set of names to a set of values.
+The environment is where R will look when it needs to find the value of a name.</p>
 
 <p>Environments have parents. If R cannot find a variable in the current environment, it will look in the parent environment.</p>
 
@@ -279,6 +279,10 @@ The environment is where R will look when it needs to find the value of a variab
 <li>baseenv is the environment of the base package (the basic functions which let R work as a programming language).</li>
 <li>globalenv is the current user working environment. The parent of globalenv will change as you load packages.</li>
 </ul>
+
+<p>Let&#39;s take a look at the different environments with RStudio.
+Choosing a different environment will show you the names in that environment.
+Loading a package will change the parent of the global environment.</p>
 
 <p>Understanding environments is important to understand how R defines variables (scoping rules).
 The scope of an association between a variable and a value is the part of the code where the association is valid.
@@ -331,10 +335,6 @@ temp
 </code></pre>
 
 <p>then the filename is assigned to name (which is what we want), but the delimiter string &#39;,&#39; is assigned to <code>header</code> rather than <code>sep</code>, because <code>header</code> is the second parameter in the list. That&#39;s why we don&#39;t have to provide <code>file=</code> for the filename, but do have to provide <code>sep=</code> for the second parameter.</p>
-
-<h3>Challenges</h3>
-
-<p>Rewrite the normalize function so that it scales data to lie between 0.0 and 1.0 by default, but will allow the caller to specify lower and upper bounds if they want. Compare your implementation to your neighbor&#39;s: do the two functions always behave the same way?</p>
 
 <h1>Key Points</h1>
 

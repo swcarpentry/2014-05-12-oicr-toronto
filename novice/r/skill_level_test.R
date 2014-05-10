@@ -1,8 +1,5 @@
 m <- matrix(c(seq(from = 2, to = 100, by = 2)),nrow=10,ncol=5)
 
-m[sample(nrow(m)),]
-m[,sample(ncol(m))]
-
 apply(m, 2, sum)
 
 f <- function(x) {
@@ -17,3 +14,6 @@ f <- function(x) {
 f(m[1,])
 
 apply(m, 2, f)
+
+m[sample(nrow(m)),]
+m[,sample(ncol(m))]
